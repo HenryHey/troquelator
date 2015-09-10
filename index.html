@@ -45,54 +45,12 @@
         camera.position.set( bbox.center().x, bbox.center().y, 250 );
       }
 
-      var boxParams = function() {
-        this.boxDepth  = 50;
-        this.boxHeight = 50;
-        this.boxLength = 100;
-      };
-
-      var boxP = new boxParams();
-
-      window.onload = function() {
-        var gui = new dat.GUI();
-        var controller 
-        
-        controller = gui.add(boxP, 'boxDepth', 10, 100);
-        controller.onFinishChange(resetMesh);
-
-        controller = gui.add(boxP, 'boxHeight', 10, 100);
-        controller.onFinishChange(resetMesh);
-
-        controller = gui.add(boxP, 'boxLength', 10, 100);
-        controller.onFinishChange(resetMesh);
-
-
-      };
-
-      init();
-      animate();
-
-      function removeEntity(name) {
-        var selectedObject = scene.getObjectByName(name);
-        console.log(selectedObject);
-        scene.remove( selectedObject );
-        animate();
-      }
-
-      function createBox() {
-        var box = [];
+      var boxGeometry = function(boxHeight, boxLength, boxDepth) {
         var increments = [];
-        var boxDepth  = boxP.boxDepth;
         console.log(boxDepth);
-        var boxHeight = boxP.boxHeight;
-        var boxLength = boxP.boxLength;
-        var flapLength = (boxDepth / 2) * 0.8;
-        var currentPoint = new THREE.Vector2(0,0);
+        var flapLength = (boxHeight / 2) * 0.8;
         var cw = 2;
 
-        //increments.push(new THREE.Vector3(flapLength + cw + boxLength + cw + flapLength, 0, 0));
-
-        //increments.push(new THREE.Vector3(flapLength + cw + boxLength + cw + flapLength, 0, 0));
         increments.push(new THREE.Vector3(flapLength, 0, 0));
         increments.push(new THREE.Vector3(cw, 0, 0));
         increments.push(new THREE.Vector3(boxLength, 0, 0));
@@ -132,7 +90,6 @@
 
         increments.push(new THREE.Vector3(0, cw, 0));
 
-        //increments.push(new THREE.Vector3(-(boxDepth + 2*cw + boxDepth + cw), 0, 0));
         increments.push(new THREE.Vector3(-boxDepth, 0, 0));
         increments.push(new THREE.Vector3(-2*cw, 0, 0));
         increments.push(new THREE.Vector3(-boxDepth, 0, 0));
@@ -150,6 +107,53 @@
         increments.push(new THREE.Vector3(-flapLength, 0, 0));
 
         increments.push(new THREE.Vector3(0, boxHeight, 0));
+
+        return increments;
+      }
+
+      var boxParams = function() {
+        this.boxDepth  = 50;
+        this.boxHeight = 50;
+        this.boxLength = 100;
+
+        this.createSVG = function() { 
+          console.log("clicked"); 
+        };
+
+      };
+
+      var boxP = new boxParams();
+
+      window.onload = function() {
+        var gui = new dat.GUI();
+        var controller;
+        
+        controller = gui.add(boxP, 'boxDepth', 10, 100);
+        controller.onFinishChange(resetMesh);
+
+        controller = gui.add(boxP, 'boxHeight', 10, 100);
+        controller.onFinishChange(resetMesh);
+
+        controller = gui.add(boxP, 'boxLength', 10, 100);
+        controller.onFinishChange(resetMesh);
+
+        gui.add(boxP,'createSVG');
+      };
+
+      init();
+      animate();
+
+      function removeEntity(name) {
+        var selectedObject = scene.getObjectByName(name);
+        console.log(selectedObject);
+        scene.remove( selectedObject );
+        animate();
+      }
+
+      function createBox() {
+        var box = [];
+        var increments = boxGeometry(boxP.boxHeight, boxP.boxLength, boxP.boxDepth);
+        var currentPoint = new THREE.Vector2(0,0);
 
         for( var i = 0; i < increments.length; i ++ ) {
           currentPoint.add(increments[i]);
