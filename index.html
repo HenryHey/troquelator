@@ -37,7 +37,12 @@
 
       var resetMesh = function(value) {
         removeEntity("boxMesh");
-        scene.add(createBox());
+        var boxMesh = createBox();
+        scene.add(boxMesh);
+        
+        var bbox = new THREE.Box3().setFromObject(boxMesh);
+        console.log(bbox.center());
+        camera.position.set( bbox.center().x, bbox.center().y, 250 );
       }
 
       var boxParams = function() {
@@ -81,7 +86,7 @@
         console.log(boxDepth);
         var boxHeight = boxP.boxHeight;
         var boxLength = boxP.boxLength;
-        var flapLength = (boxHeight / 2) * 0.8;
+        var flapLength = (boxDepth / 2) * 0.8;
         var currentPoint = new THREE.Vector2(0,0);
         var cw = 2;
 
@@ -154,7 +159,7 @@
         var holes = [];
         var triangles = THREE.Shape.Utils.triangulateShape ( box, holes );
         var geometry = new THREE.Geometry();
-          var material = new THREE.MeshBasicMaterial( { color: 0xf08000, wireframe: true, transparent: true } ); 
+        var material = new THREE.MeshBasicMaterial( { color: 0xf08000, wireframe: true, transparent: true } ); 
 
         //var material = new THREE.LineBasicMaterial({color:0xf08000});
 
@@ -190,10 +195,12 @@
 
         var light = new THREE.PointLight( 0xffffff, 0.8 );
         camera.add( light );
-
-        scene.add(createBox());
-
+        var boxMesh = createBox();
+        scene.add(boxMesh);
         
+        var bbox = new THREE.Box3().setFromObject(boxMesh);
+        console.log(bbox.center());
+        camera.position.set( bbox.center().x, bbox.center().y, 250 );
 
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setClearColor( 0xf0f0f0 );
