@@ -20,7 +20,8 @@
     <script src="stats.min.js"></script>
     <script src="dat.gui.min.js"></script>
 
-    <script>
+		<script>
+
 
       var container, stats;
 
@@ -35,113 +36,225 @@
       var windowHalfX = window.innerWidth / 2;
       var windowHalfY = window.innerHeight / 2;
 
-      var resetMesh = function(value) {
-        removeEntity("boxMesh");
-        var boxMesh = createBox();
-        scene.add(boxMesh);
-        
-        var bbox = new THREE.Box3().setFromObject(boxMesh);
-        console.log(bbox.center());
-        camera.position.set( bbox.center().x, bbox.center().y, 250 );
-      }
-
-      var boxGeometry = function(boxHeight, boxLength, boxDepth) {
-        var increments = [];
-        console.log(boxDepth);
-        var flapLength = (boxHeight / 2) * 0.8;
-        var cw = 2;
-
-        increments.push(new THREE.Vector3(flapLength, 0, 0));
-        increments.push(new THREE.Vector3(cw, 0, 0));
-        increments.push(new THREE.Vector3(boxLength, 0, 0));
-        increments.push(new THREE.Vector3(cw, 0, 0));
-        increments.push(new THREE.Vector3(flapLength, 0, 0));
-
-        increments.push(new THREE.Vector3(0, -boxHeight, 0));
-
-        increments.push(new THREE.Vector3(-flapLength, 0, 0));
-
-        increments.push(new THREE.Vector3(0, -cw, 0));
-
-        increments.push(new THREE.Vector3(boxDepth + 2*cw + boxDepth + cw, 0, 0));
-
-        increments.push(new THREE.Vector3(0, -boxHeight, 0));
-
-        increments.push(new THREE.Vector3(-boxDepth, 0, 0));
-        increments.push(new THREE.Vector3(-2*cw, 0, 0));
-        increments.push(new THREE.Vector3(-boxDepth, 0, 0));
-        increments.push(new THREE.Vector3(-cw, 0, 0));
-
-        increments.push(new THREE.Vector3(0, -cw, 0));
-
-        increments.push(new THREE.Vector3(flapLength, 0, 0));
-
-        increments.push(new THREE.Vector3(0, -boxHeight, 0));
-
-        increments.push(new THREE.Vector3(-flapLength, 0, 0));
-        increments.push(new THREE.Vector3(-cw, 0, 0));
-        increments.push(new THREE.Vector3(-boxLength, 0, 0));
-        increments.push(new THREE.Vector3(-cw, 0, 0));
-        increments.push(new THREE.Vector3(-flapLength, 0, 0));
-
-        increments.push(new THREE.Vector3(0, boxHeight, 0));
-
-        increments.push(new THREE.Vector3(flapLength, 0, 0));
-
-        increments.push(new THREE.Vector3(0, cw, 0));
-
-        increments.push(new THREE.Vector3(-boxDepth, 0, 0));
-        increments.push(new THREE.Vector3(-2*cw, 0, 0));
-        increments.push(new THREE.Vector3(-boxDepth, 0, 0));
-        increments.push(new THREE.Vector3(-cw, 0, 0));
-
-        increments.push(new THREE.Vector3(0, boxHeight, 0));
-
-        increments.push(new THREE.Vector3(boxDepth, 0, 0));
-        increments.push(new THREE.Vector3(2*cw, 0, 0));
-        increments.push(new THREE.Vector3(boxDepth, 0, 0));
-        increments.push(new THREE.Vector3(cw, 0, 0));
-
-        increments.push(new THREE.Vector3(0, cw, 0));
-
-        increments.push(new THREE.Vector3(-flapLength, 0, 0));
-
-        increments.push(new THREE.Vector3(0, boxHeight, 0));
-
-        return increments;
-      }
 
       var boxParams = function() {
         this.boxDepth  = 50;
         this.boxHeight = 50;
         this.boxLength = 100;
+				this.showMesh = false;
 
-        this.createSVG = function() { 
-          console.log("clicked"); 
-        };
+				this.boxGeometry = function() {
+					var increments = [];
+					console.log(this.boxDepth);
+					var flapLength = (this.boxHeight / 2) * 0.8;
+					var cw = 1;
 
+					increments.push(new THREE.Vector3(flapLength, 0, 0));
+					increments.push(new THREE.Vector3(cw, 0, 0));
+					increments.push(new THREE.Vector3(this.boxLength, 0, 0));
+					increments.push(new THREE.Vector3(cw, 0, 0));
+					increments.push(new THREE.Vector3(flapLength, 0, 0));
+
+					increments.push(new THREE.Vector3(0, -this.boxHeight, 0));
+
+					increments.push(new THREE.Vector3(-flapLength, 0, 0));
+
+					increments.push(new THREE.Vector3(0, -cw, 0));
+
+					increments.push(new THREE.Vector3(this.boxDepth, 0, 0));
+					increments.push(new THREE.Vector3(cw, -cw, 0));
+					increments.push(new THREE.Vector3(this.boxDepth, 0, 0));
+					increments.push(new THREE.Vector3(cw, 0, 0));
+
+					increments.push(new THREE.Vector3(0, -this.boxHeight + 2*cw, 0));
+
+					increments.push(new THREE.Vector3(-this.boxDepth, 0, 0));
+					increments.push(new THREE.Vector3(-cw, -cw, 0));
+					increments.push(new THREE.Vector3(-this.boxDepth, 0, 0));
+					increments.push(new THREE.Vector3(-cw, 0, 0));
+
+					increments.push(new THREE.Vector3(0, -cw, 0));
+
+					increments.push(new THREE.Vector3(flapLength, 0, 0));
+
+					increments.push(new THREE.Vector3(0, -this.boxHeight , 0));
+
+					increments.push(new THREE.Vector3(-flapLength, 0, 0));
+					increments.push(new THREE.Vector3(-cw, 0, 0));
+					increments.push(new THREE.Vector3(-this.boxLength, 0, 0));
+					increments.push(new THREE.Vector3(-cw, 0, 0));
+					increments.push(new THREE.Vector3(-flapLength, 0, 0));
+
+					increments.push(new THREE.Vector3(0, this.boxHeight, 0));
+
+					increments.push(new THREE.Vector3(flapLength, 0, 0));
+
+					increments.push(new THREE.Vector3(0, cw, 0));
+
+					increments.push(new THREE.Vector3(-this.boxDepth, 0, 0));
+					increments.push(new THREE.Vector3(-cw, cw, 0));
+					increments.push(new THREE.Vector3(-this.boxDepth, 0, 0));
+					increments.push(new THREE.Vector3(-cw, 0, 0));
+
+					increments.push(new THREE.Vector3(0, this.boxHeight - 2*cw, 0));
+
+					increments.push(new THREE.Vector3(this.boxDepth, 0, 0));
+					increments.push(new THREE.Vector3(cw, cw, 0));
+					increments.push(new THREE.Vector3(this.boxDepth, 0, 0));
+					increments.push(new THREE.Vector3(cw, 0, 0));
+
+					increments.push(new THREE.Vector3(0, cw, 0));
+
+					increments.push(new THREE.Vector3(-flapLength, 0, 0));
+
+					increments.push(new THREE.Vector3(0, this.boxHeight, 0));
+
+					return increments;
+				}
+
+				this.createFoldMarks = function() {
+					var folds = [];
+					var from, to;
+					console.log(this.boxDepth);
+					var flapLength = (this.boxHeight / 2) * 0.8;
+					var cw = 1;
+
+					from = new THREE.Vector3(flapLength + cw/2, 0, 0);
+					to	 = new THREE.Vector3(flapLength + cw/2, 3*this.boxHeight + 2*cw, 0);
+					folds.push({"from":from, "to":to});
+
+					from = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2, 0, 0);
+					to	 = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2, 3*this.boxHeight + 2*cw, 0);
+					folds.push({"from":from, "to":to});
+					
+					from = new THREE.Vector3(flapLength - this.boxDepth - cw/2, this.boxHeight + cw/2, 0);
+					to   = new THREE.Vector3(flapLength - this.boxDepth - cw/2, 2*this.boxHeight + cw/2, 0);
+					folds.push({"from":from, "to":to});
+
+					from = new THREE.Vector3( flapLength + cw + this.boxLength + this.boxDepth + cw/2, 
+																		this.boxHeight + cw/2, 0);
+					to   = new THREE.Vector3( flapLength + cw + this.boxLength + this.boxDepth + cw/2,
+																	  2*this.boxHeight + cw/2, 0);
+					folds.push({"from":from, "to":to});
+
+					from = new THREE.Vector3( flapLength + cw/2, 
+																		this.boxHeight + cw/2, 0);
+					to   = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2,
+																		this.boxHeight + cw/2, 0);
+					folds.push({"from":from, "to":to});
+					
+					from = new THREE.Vector3( flapLength + cw/2, 
+																		2*this.boxHeight + cw + cw/2, 0);
+					to   = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2,
+																		2*this.boxHeight + cw + cw/2, 0);
+					folds.push({"from":from, "to":to});
+					
+					
+					
+					return folds;
+				}
+
+				this.createSVG = function(points, foldMarks) {
+					var svgNode = document.getElementsByTagName("svg");  
+					if (svgNode[0] != null) {	
+						svgNode[0].parentNode.removeChild(svgNode[0]);
+					}
+
+					var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+					var currentPoint = new THREE.Vector3(0,0,0);
+					var margin = 5;
+					var minX = 0, minY = 0;
+					for (i=0; i<points.length; i++) {
+						currentPoint.add(points[i]);
+						if (currentPoint.x < minX) minX = currentPoint.x;
+						if (currentPoint.y < minY) minY = currentPoint.y;
+					}
+
+					minX -= margin;
+					minY -= margin;
+
+					console.log("minX: " + minX + " minY: " + minY);
+					var polylineString = -minX + "," + -minY + " ";
+					var currentPoint = new THREE.Vector3(-minX,-minY,0);
+					for (i=0; i<points.length; i++) {
+						currentPoint.add(new THREE.Vector3(points[i].x, points[i].y, 0) );
+						polylineString += currentPoint.x + "," + currentPoint.y + " ";
+					}
+
+					console.log(polylineString);
+					var polylineSVG = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+					polylineSVG.setAttribute('points', polylineString);
+					polylineSVG.setAttribute("style", "fill:none;stroke:black;stroke-width:1");
+					svg.appendChild(polylineSVG);
+
+					var lineSVG;
+					var x1, y1, x2, y2;
+					for (i=0; i<foldMarks.length; i++) {
+						x1 = foldMarks[i].from.x - minX;
+						y1 = -foldMarks[i].from.y - minY;
+						x2 = foldMarks[i].to.x - minX;
+						y2 = -foldMarks[i].to.y - minY;
+
+						console.log('(' + x1 + ',' + y1 + ') => (' + x2 + ',' + y2 + ')');
+
+						lineSVG = document.createElementNS("http://www.w3.org/2000/svg", "line");
+						lineSVG.setAttribute('x1', x1);
+						lineSVG.setAttribute('y1', y1);
+						lineSVG.setAttribute('x2', x2);
+						lineSVG.setAttribute('y2', y2);
+						lineSVG.setAttribute("style", "fill:none;stroke:lightgray;stroke-width:1");
+						svg.appendChild(lineSVG);
+					}
+					
+
+
+
+					svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+					svg.setAttribute("style", "margin:30px");
+					svg.setAttribute("width", "30cm");
+					svg.setAttribute("height", "20cm");
+					svg.setAttribute("viewBox", "0 0 300 300");
+					document.body.appendChild(svg);
+				}
       };
 
       var boxP = new boxParams();
+
+      var updateBox = function(value) {
+
+        var boxMesh = createBox();
+				if (boxP.showMesh) {
+					removeEntity("boxMesh");
+					scene.add(boxMesh);
+        
+					var bbox = new THREE.Box3().setFromObject(boxMesh);
+					console.log(bbox.center());
+					camera.position.set( bbox.center().x, bbox.center().y, 250 );
+				}
+      }
 
       window.onload = function() {
         var gui = new dat.GUI();
         var controller;
         
         controller = gui.add(boxP, 'boxDepth', 10, 100);
-        controller.onFinishChange(resetMesh);
+        controller.onFinishChange(updateBox);
 
         controller = gui.add(boxP, 'boxHeight', 10, 100);
-        controller.onFinishChange(resetMesh);
+        controller.onFinishChange(updateBox);
 
         controller = gui.add(boxP, 'boxLength', 10, 100);
-        controller.onFinishChange(resetMesh);
+        controller.onFinishChange(updateBox);
 
-        gui.add(boxP,'createSVG');
+				//gui.add(boxP,'showMesh');
+        //gui.add(boxP,'createSVG');
       };
 
+			
       init();
-      animate();
+			if (boxP.showMesh) {
+				animate();
+			}
 
       function removeEntity(name) {
         var selectedObject = scene.getObjectByName(name);
@@ -152,30 +265,33 @@
 
       function createBox() {
         var box = [];
-        var increments = boxGeometry(boxP.boxHeight, boxP.boxLength, boxP.boxDepth);
-        var currentPoint = new THREE.Vector2(0,0);
+        var increments = boxP.boxGeometry();
+				boxP.createSVG(increments, boxP.createFoldMarks());
+				
+				if (boxP.showMesh) {
+					var currentPoint = new THREE.Vector2(0,0);
 
-        for( var i = 0; i < increments.length; i ++ ) {
-          currentPoint.add(increments[i]);
-          box.push( new THREE.Vector3(currentPoint.x, currentPoint.y, 0) ); 
-        }
+					for( var i = 0; i < increments.length; i ++ ) {
+						currentPoint.add(increments[i]);
+						box.push( new THREE.Vector3(currentPoint.x, currentPoint.y, 0) ); 
+					}
 
-        var holes = [];
-        var triangles = THREE.Shape.Utils.triangulateShape ( box, holes );
-        var geometry = new THREE.Geometry();
-        var material = new THREE.MeshBasicMaterial( { color: 0xf08000, wireframe: true, transparent: true } ); 
+					var holes = [];
+					var triangles = THREE.Shape.Utils.triangulateShape ( box, holes );
+					var geometry = new THREE.Geometry();
+					var material = new THREE.MeshBasicMaterial({color: 0xf08000, wireframe: true, transparent: true}); 
 
-        //var material = new THREE.LineBasicMaterial({color:0xf08000});
+					geometry.vertices = box;
 
-        geometry.vertices = box;
-
-        for( var i = 0; i < triangles.length; i++ ){
-          geometry.faces.push( new THREE.Face3( triangles[i][0], triangles[i][1], triangles[i][2] ));
-        }
-        var mesh = new THREE.Mesh( geometry, material );
-        mesh.name = "boxMesh";
-        return mesh;
-
+					for( var i = 0; i < triangles.length; i++ ){
+						geometry.faces.push( new THREE.Face3( triangles[i][0], triangles[i][1], triangles[i][2] ));
+					}
+					var mesh = new THREE.Mesh( geometry, material );
+					mesh.name = "boxMesh";
+					return mesh;
+				} else {
+					return null;
+				}
       }
 
       function init() {
@@ -188,41 +304,42 @@
         info.style.top = '10px';
         info.style.width = '100%';
         info.style.textAlign = 'center';
-        info.innerHTML = 'Simple procedurally generated 3D shapes<br/>Drag to spin';
+        info.innerHTML = 'Troquelator';
         container.appendChild( info );
 
-        scene = new THREE.Scene();
+				var boxMesh = createBox();
+				if (boxP.showMesh) {
+					scene = new THREE.Scene();
 
-        camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 1000 );
-        camera.position.set( 50, -75, 250 );
-        scene.add( camera );
+					camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 1000 );
+					camera.position.set( 50, -75, 250 );
+					scene.add( camera );
 
-        var light = new THREE.PointLight( 0xffffff, 0.8 );
-        camera.add( light );
-        var boxMesh = createBox();
-        scene.add(boxMesh);
+					var light = new THREE.PointLight( 0xffffff, 0.8 );
+					camera.add( light );
+					scene.add(boxMesh);
         
-        var bbox = new THREE.Box3().setFromObject(boxMesh);
-        console.log(bbox.center());
-        camera.position.set( bbox.center().x, bbox.center().y, 250 );
+					var bbox = new THREE.Box3().setFromObject(boxMesh);
+					console.log(bbox.center());
+					camera.position.set( bbox.center().x, bbox.center().y, 250 );
 
-        renderer = new THREE.WebGLRenderer( { antialias: true } );
-        renderer.setClearColor( 0xf0f0f0 );
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        container.appendChild( renderer.domElement );
+					renderer = new THREE.WebGLRenderer( { antialias: true } );
+					renderer.setClearColor( 0xf0f0f0 );
+					renderer.setPixelRatio( window.devicePixelRatio );
+					renderer.setSize( window.innerWidth, window.innerHeight );
+					container.appendChild( renderer.domElement );
 
-        stats = new Stats();
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.top = '0px';
-        container.appendChild( stats.domElement );
+					stats = new Stats();
+					stats.domElement.style.position = 'absolute';
+					stats.domElement.style.top = '0px';
+					container.appendChild( stats.domElement );
 
-        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-        document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-        document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+					document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+					document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+					document.addEventListener( 'touchmove', onDocumentTouchMove, false );
 
-        window.addEventListener( 'resize', onWindowResize, false );
-
+					window.addEventListener( 'resize', onWindowResize, false );
+				}
       }
 
       function onWindowResize() {
@@ -236,8 +353,6 @@
         renderer.setSize( window.innerWidth, window.innerHeight );
 
       }
-
-      //
 
       function onDocumentMouseDown( event ) {
 
@@ -253,64 +368,40 @@
       }
 
       function onDocumentMouseMove( event ) {
-
         mouseX = event.clientX - windowHalfX;
-
-        targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
-
       }
 
       function onDocumentMouseUp( event ) {
-
         document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
         document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
         document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
-
       }
 
       function onDocumentMouseOut( event ) {
-
         document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
         document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
         document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
-
       }
 
       function onDocumentTouchStart( event ) {
-
         if ( event.touches.length == 1 ) {
-
           event.preventDefault();
-
           mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
-          targetRotationOnMouseDown = targetRotation;
-
         }
-
       }
 
       function onDocumentTouchMove( event ) {
 
         if ( event.touches.length == 1 ) {
-
           event.preventDefault();
-
           mouseX = event.touches[ 0 ].pageX - windowHalfX;
-          targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
-
         }
-
       }
 
-      //
-
       function animate() {
-
         requestAnimationFrame( animate );
-
         render();
         stats.update();
-
       }
 
       function render() {
