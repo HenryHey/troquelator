@@ -237,6 +237,8 @@ var box = function() {
     svg.setAttribute("width", "90%");
     svg.setAttribute("height", "20cm");
     svg.setAttribute("viewBox", "0 0 300 300");
+    svg.setAttribute("id", "svg");
+
     document.body.appendChild(svg);
   }
 };
