@@ -17,7 +17,7 @@ var box = function() {
     increments.push(new THREE.Vector3(cw, 0, 0));
     increments.push(new THREE.Vector3(flapLength, 0, 0));
 
-    increments.push(new THREE.Vector3(0, -this.boxHeight, 0));
+    increments.push(new THREE.Vector3(0, -this.boxDepth, 0));
 
     increments.push(new THREE.Vector3(-flapLength, 0, 0));
 
@@ -41,7 +41,7 @@ var box = function() {
 
     increments.push(new THREE.Vector3(flapLength, 0, 0));
 
-    increments.push(new THREE.Vector3(0, -this.boxHeight , 0));
+    increments.push(new THREE.Vector3(0, -this.boxDepth , 0));
 
     increments.push(new THREE.Vector3(-flapLength, 0, 0));
     increments.push(new THREE.Vector3(-cw, 0, 0));
@@ -49,7 +49,7 @@ var box = function() {
     increments.push(new THREE.Vector3(-cw, 0, 0));
     increments.push(new THREE.Vector3(-flapLength, 0, 0));
 
-    increments.push(new THREE.Vector3(0, this.boxHeight, 0));
+    increments.push(new THREE.Vector3(0, this.boxDepth, 0));
 
     increments.push(new THREE.Vector3(flapLength, 0, 0));
 
@@ -73,7 +73,7 @@ var box = function() {
 
     increments.push(new THREE.Vector3(-flapLength, 0, 0));
 
-    increments.push(new THREE.Vector3(0, this.boxHeight, 0));
+    increments.push(new THREE.Vector3(0, this.boxDepth, 0));
 
     return increments;
   }
@@ -85,35 +85,35 @@ var box = function() {
     var flapLength = (this.boxHeight / 2) * 0.8;
 
     // Left Hole
-    from = new THREE.Vector3(flapLength + cw/2     , this.boxHeight + cw + this.boxHeight/3, 0);
-    to   = new THREE.Vector3(flapLength + cw/2 + cw, this.boxHeight + cw + this.boxHeight/3, 0);
+    from = new THREE.Vector3(flapLength + cw/2     , this.boxDepth + cw + this.boxHeight/3, 0);
+    to   = new THREE.Vector3(flapLength + cw/2 + cw, this.boxDepth + cw + this.boxHeight/3, 0);
     holes.push({"from":from, "to":to});
 
-    from = new THREE.Vector3(flapLength + cw/2 + cw, this.boxHeight + cw +   this.boxHeight/3, 0);
-    to   = new THREE.Vector3(flapLength + cw/2 + cw, this.boxHeight + cw + 2*this.boxHeight/3, 0);
+    from = new THREE.Vector3(flapLength + cw/2 + cw, this.boxDepth + cw +   this.boxHeight/3, 0);
+    to   = new THREE.Vector3(flapLength + cw/2 + cw, this.boxDepth + cw + 2*this.boxHeight/3, 0);
     holes.push({"from":from, "to":to});
 
-    from = new THREE.Vector3(flapLength + cw/2     , this.boxHeight + cw + 2*this.boxHeight/3, 0);
-    to   = new THREE.Vector3(flapLength + cw/2 + cw, this.boxHeight + cw + 2*this.boxHeight/3, 0);
+    from = new THREE.Vector3(flapLength + cw/2     , this.boxDepth + cw + 2*this.boxHeight/3, 0);
+    to   = new THREE.Vector3(flapLength + cw/2 + cw, this.boxDepth + cw + 2*this.boxHeight/3, 0);
     holes.push({"from":from, "to":to});
 
     // Right Hole
     from = new THREE.Vector3( flapLength + cw + this.boxLength - cw/2, 
-                              this.boxHeight + cw + this.boxHeight/3, 0);
+                              this.boxDepth + cw + this.boxHeight/3, 0);
     to   = new THREE.Vector3( flapLength + cw + this.boxLength + cw/2, 
-                              this.boxHeight + cw + this.boxHeight/3, 0);
+                              this.boxDepth + cw + this.boxHeight/3, 0);
     holes.push({"from":from, "to":to});
 
     from = new THREE.Vector3( flapLength + cw + this.boxLength - cw/2, 
-                              this.boxHeight + cw +   this.boxHeight/3, 0);
+                              this.boxDepth + cw +   this.boxHeight/3, 0);
     to   = new THREE.Vector3( flapLength + cw + this.boxLength - cw/2, 
-                              this.boxHeight + cw + 2*this.boxHeight/3, 0);
+                              this.boxDepth + cw + 2*this.boxHeight/3, 0);
     holes.push({"from":from, "to":to});
 
     from = new THREE.Vector3( flapLength + cw + this.boxLength - cw/2, 
-                              this.boxHeight + cw + 2*this.boxHeight/3, 0);
+                              this.boxDepth + cw + 2*this.boxHeight/3, 0);
     to   = new THREE.Vector3( flapLength + cw + this.boxLength + cw/2, 
-                              this.boxHeight + cw + 2*this.boxHeight/3, 0);
+                              this.boxDepth + cw + 2*this.boxHeight/3, 0);
     holes.push({"from":from, "to":to});
 
     return holes;
@@ -127,33 +127,34 @@ var box = function() {
     var cw = this.cardboardWidth;
 
     from = new THREE.Vector3(flapLength + cw/2, 0, 0);
-    to   = new THREE.Vector3(flapLength + cw/2, 3*this.boxHeight + 2*cw, 0);
+    to   = new THREE.Vector3(flapLength + cw/2, 2*this.boxDepth + this.boxHeight + 2*cw, 0);
     folds.push({"from":from, "to":to});
 
     from = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2, 0, 0);
-    to   = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2, 3*this.boxHeight + 2*cw, 0);
+    to   = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2,
+                              2*this.boxDepth + this.boxHeight + 2*cw, 0);
     folds.push({"from":from, "to":to});
     
-    from = new THREE.Vector3(flapLength - this.boxDepth - cw/2, this.boxHeight + cw + cw/2, 0);
-    to   = new THREE.Vector3(flapLength - this.boxDepth - cw/2, 2*this.boxHeight + cw/2, 0);
+    from = new THREE.Vector3(flapLength - this.boxDepth - cw/2, this.boxDepth + cw + cw/2, 0);
+    to   = new THREE.Vector3(flapLength - this.boxDepth - cw/2, this.boxDepth + this.boxHeight + cw/2, 0);
     folds.push({"from":from, "to":to});
 
     from = new THREE.Vector3( flapLength + cw + this.boxLength + cw + this.boxDepth + cw/2, 
-                              this.boxHeight + cw + cw/2, 0);
+                              this.boxDepth + cw + cw/2, 0);
     to   = new THREE.Vector3( flapLength + cw + this.boxLength + cw + this.boxDepth + cw/2,
-                              2*this.boxHeight + cw/2, 0);
+                              this.boxDepth + this.boxHeight + cw/2, 0);
     folds.push({"from":from, "to":to});
 
     from = new THREE.Vector3( flapLength + cw/2, 
-                              this.boxHeight + cw/2, 0);
+                              this.boxDepth + cw/2, 0);
     to   = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2,
-                              this.boxHeight + cw/2, 0);
+                              this.boxDepth + cw/2, 0);
     folds.push({"from":from, "to":to});
     
     from = new THREE.Vector3( flapLength + cw/2, 
-                              2*this.boxHeight + cw + cw/2, 0);
+                              this.boxDepth + this.boxHeight + cw + cw/2, 0);
     to   = new THREE.Vector3(flapLength + cw + this.boxLength + cw/2,
-                              2*this.boxHeight + cw + cw/2, 0);
+                              this.boxDepth + this.boxHeight + cw + cw/2, 0);
     folds.push({"from":from, "to":to});
     
     return folds;
